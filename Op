@@ -1,0 +1,38 @@
+Scan Results and Findings
+Host Availability
+The target system 192.168.56.101 responded to the scan, confirming that the host is active and reachable on the network.
+Open Ports Identified
+Port 22 – SSH
+Service: OpenSSH 8.2p1
+Protocol: TCP
+This port is running Secure Shell (SSH), which allows remote login and secure command execution on the system.
+Security Considerations:
+If weak credentials are used, it may be vulnerable to brute force attacks.
+Misconfigured SSH services could allow unauthorized access.
+Potential Attack Vectors
+Password brute force attacks
+Credential reuse
+SSH key misconfiguration
+Port 80 – HTTP
+Service: Apache HTTP Server 2.4.41
+Operating System: Ubuntu Linux
+This port hosts a web server running Apache.
+Information Discovered
+Web server version: Apache 2.4.41
+The server is running on Ubuntu Linux
+Security Considerations
+Web applications hosted on this server could contain vulnerabilities such as:
+Directory traversal
+File upload vulnerabilities
+Authentication bypass
+Local file inclusion (LFI)
+Remote code execution (RCE)
+This port will be the primary attack surface during web enumeration and exploitation.
+Operating System Detection
+The aggressive scan indicates the target is running:
+Operating System: Linux
+Kernel Version: Linux Kernel 5.x
+Environment: Oracle VirtualBox virtual machine
+This information helps attackers determine kernel exploits or privilege escalation techniques suitable for Linux systems.
+Network Distance
+The scan shows the target system is 1 hop away, indicating it is on the same local network segment as the attacker machine

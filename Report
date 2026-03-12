@@ -1,17 +1,9 @@
-1. Introduction
-The purpose of this penetration testing exercise was to evaluate the security posture of the vulnerable machine Napping 1.0.1, which is intentionally designed for practicing web application and system exploitation techniques.
-The machine simulates a real-world environment where an attacker attempts to identify vulnerabilities in a web application and leverage them to gain unauthorized access to the underlying system. The assessment was conducted from an attacker’s perspective using a controlled penetration testing environment.
-During the engagement, multiple stages of testing were performed including information gathering, vulnerability identification, exploitation, and post-exploitation activities. The goal was to identify weaknesses in the system that could allow an attacker to compromise the application and escalate privileges within the target machine.
-The testing methodology followed common penetration testing practices used in real-world security assessments, focusing on discovering exploitable vulnerabilities and demonstrating their impact.
-2. Objective
-The main objective of this penetration testing assessment was to successfully compromise the Napping 1.0.1 machine by identifying and exploiting vulnerabilities present in the system.
-The specific objectives of the assessment included:
-Perform reconnaissance and enumeration to identify open ports, services, and technologies used by the target system.
-Analyze the web application functionality to discover potential vulnerabilities.
-Identify security weaknesses such as improper link handling leading to Reverse Tabnabbing attacks.
-Exploit discovered vulnerabilities to obtain user credentials.
-Use the obtained credentials to gain initial system access through SSH.
-Perform privilege escalation techniques to obtain elevated access on the machine.
-Demonstrate the full attack chain from initial access to system compromise.
-Document all findings, exploitation steps, and mitigation recommendations.
-The ultimate goal of this assessment was to simulate how an attacker could compromise the system and provide recommendations to mitigate the identified vulnerabilities.
+Post-Exploitation Activities
+After obtaining root privileges, the attacker gained unrestricted control over the target system. With root-level access, it is possible to perform several administrative operations that are normally restricted to privileged users.
+These actions may include:
+Accessing and modifying sensitive system files.
+Viewing protected directories such as /root and system configuration files.
+Creating or modifying user accounts.
+Installing or executing additional tools or scripts.
+Maintaining persistence on the system.
+This level of access demonstrates that the attacker can fully control the machine and potentially compromise the confidentiality, integrity, and availability of the system.

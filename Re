@@ -1,0 +1,80 @@
+14. Recommendations / Mitigation
+Based on the vulnerabilities identified during the penetration testing assessment, the following mitigation strategies are recommended to improve the overall security posture of the system.
+14.1 Prevent Reverse Tabnabbing Attacks
+To mitigate reverse tabnabbing vulnerabilities, all external links that open in a new browser tab should include the following attributes:
+rel="noopener"
+rel="noreferrer"
+This prevents the newly opened page from gaining access to the originating page via the window.opener property.
+Example:
+HTML
+Copy code
+<a href="https://example.com" target="_blank" rel="noopener noreferrer">Link</a>
+Additionally, user-submitted links should be validated and monitored to prevent malicious redirection attempts.
+14.2 Strengthen Authentication Mechanisms
+Weak or reused credentials increase the risk of unauthorized access.
+Recommended controls include:
+Enforcing strong password policies
+Implementing account lockout mechanisms
+Enabling multi-factor authentication (MFA)
+Preventing password reuse across services
+These measures significantly reduce the risk of brute-force and credential-stuffing attacks.
+14.3 Secure File Permissions and Access Controls
+Improper file permissions allowed attackers to modify critical scripts.
+To mitigate this risk:
+Restrict write permissions on sensitive files.
+Ensure only authorized users can modify application scripts.
+Regularly audit file permissions using commands such as:
+Bash
+Copy code
+ls -la
+Principle of Least Privilege should always be enforced.
+14.4 Secure Scheduled Tasks
+The scheduled Python script executed with elevated privileges allowed privilege escalation.
+Recommended mitigation:
+Ensure scheduled scripts are owned by root and not writable by other users.
+Regularly audit cron jobs and scheduled tasks.
+Store scripts in restricted directories.
+Example command to check cron jobs:
+Bash
+Copy code
+crontab -l
+14.5 Implement Proper Access Controls
+The system allowed certain users to run privileged commands without proper restrictions.
+To prevent this:
+Carefully configure sudo permissions.
+Restrict commands in /etc/sudoers.
+Regularly review sudo privileges using:
+Bash
+Copy code
+sudo -l
+14.6 Improve System Hardening
+System hardening measures should be implemented to reduce the attack surface.
+Recommended steps:
+Keep all software and packages updated.
+Disable unnecessary services and ports.
+Apply regular security patches.
+Implement intrusion detection systems (IDS).
+14.7 Security Awareness and Monitoring
+User awareness and system monitoring are essential for detecting malicious activity.
+Recommended practices include:
+Conducting regular security awareness training.
+Implementing centralized logging and monitoring.
+Monitoring suspicious login attempts and unusual activity.
+15. References
+The following resources were used during the penetration testing process and report preparation:
+OWASP Top 10 Web Application Security Risks
+https://owasp.org/www-project-top-ten/⁠�
+HackTricks – Penetration Testing Methodologies
+https://book.hacktricks.wiki⁠�
+Nmap Official Documentation
+https://nmap.org/book/man.html⁠�
+Gobuster Tool Documentation
+https://github.com/OJ/gobuster⁠�
+Metasploit Framework Documentation
+https://docs.metasploit.com⁠�
+Linux Privilege Escalation Techniques
+https://gtfobins.github.io⁠�
+VulnHub – Napping 1.0.1 Machine
+https://www.vulnhub.com⁠�
+OWASP Testing Guide
+https://owasp.org/www-project-web-security-testing-guide/⁠�
